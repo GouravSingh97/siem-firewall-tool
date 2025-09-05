@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row g-3">
+  <!-- KPI cards -->
+  <div class="col-6 col-lg-3">
+    <div class="card kpi glow-cyan">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <h6 class="text-uppercase text-muted-2 mb-1">Total Events</h6>
+          <i class="bi bi-hdd-network kpi-icon"></i>
+        </div>
+        <h2 class="mb-0" id="kpi-total">0</h2>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-lg-3">
+    <div class="card kpi glow-green">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <h6 class="text-uppercase text-muted-2 mb-1">Allowed</h6>
+          <i class="bi bi-check-circle kpi-icon"></i>
+        </div>
+        <h2 class="mb-0 text-allow" id="kpi-allow">0</h2>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-lg-3">
+    <div class="card kpi glow-red">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <h6 class="text-uppercase text-muted-2 mb-1">Blocked</h6>
+          <i class="bi bi-shield-x kpi-icon"></i>
+        </div>
+        <h2 class="mb-0 text-block" id="kpi-block">0</h2>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-lg-3">
+    <div class="card kpi glow-amber">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <h6 class="text-uppercase text-muted-2 mb-1">Open Alerts</h6>
+          <i class="bi bi-exclamation-triangle kpi-icon"></i>
+        </div>
+        <h2 class="mb-0 text-warning" id="kpi-alerts">0</h2>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="col-12 col-xl-6">
+    <div class="card h-100">
+      <div class="card-header d-flex align-items-center justify-content-between">
+        <h6 class="mb-0">Traffic (Last 60 min)</h6>
+        <button class="btn btn-sm btn-outline-cyan" onclick="refreshTraffic()">Refresh</button>
+      </div>
+      <div class="card-body">
+        <canvas id="trafficChart" height="120"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-xl-6">
+    <div class="card h-100">
+      <div class="card-header d-flex align-items-center justify-content-between">
+        <h6 class="mb-0">Top Talkers</h6>
+        <button class="btn btn-sm btn-outline-cyan" onclick="refreshTopTalkers()">Refresh</button>
+      </div>
+      <div class="card-body">
+        <canvas id="topTalkersChart" height="120"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    initDashboard();
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,1 @@
+Jan 1 00:00:00 firewall kernel: IN=eth0 OUT= MAC= SRC=1.2.3.4 DST=5.6.7.8 PROTO=TCP SPT=12345 DPT=80

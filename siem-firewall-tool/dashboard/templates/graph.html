@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row g-3">
+  <div class="col-12 col-xl-3">
+    <div class="card">
+      <div class="card-header d-flex align-items-center">
+        <h6 class="mb-0 me-auto">Graph Controls</h6>
+        <button class="btn btn-sm btn-outline-cyan" onclick="buildGraph()">Refresh</button>
+      </div>
+      <div class="card-body">
+        <p class="text-muted-2 small">Shows top talker pairs (Src → Dst) from recent logs.</p>
+        <div class="d-flex flex-column gap-2">
+          <label class="form-label small mb-0">Max Edges</label>
+          <input type="range" id="graph-limit" min="10" max="200" value="60" class="form-range" onchange="buildGraph()">
+          <div class="d-flex justify-content-between small text-muted-2">
+            <span>10</span><span>200</span>
+          </div>
+        </div>
+        <button class="btn btn-sm btn-secondary" onclick="graphFit()">Fit</button>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-xl-9">
+    <div class="card" style="height:70vh;">
+      <div class="card-header">
+        <h6 class="mb-0">Source ↔ Destination Graph</h6>
+      </div>
+      <div class="card-body p-0">
+        <div id="cy" class="cy"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Cytoscape.js -->
+<script src="https://unpkg.com/cytoscape@3.28.1/dist/cytoscape.min.js"></script>
+
+<script>
+  let cy;
+
+  async function buildGraph() {
+    const limit = document.getElementById("graph-limit").value;
+    try {
+      const res = await fetch(`/api/graph?limit=${limit}`);
+      const edges = await res.json();
+
+      const nodes = {};
+      edges.forEach(e => {
+        nodes[e.data.source] = { data: { id: e.data.source, label: e.data.source } };
+        nodes[e.data.target] = { data: { id: e.data.target, label: e.data.target } };
+      });
+
+      cy = cytoscape({
+        container: document.getElementById("cy"),
+        elements: {
+          nodes: Object.values(nodes),
+          edges: edges
+        },
+        layout: { name: "cose", fit: true },
+        style: [
+          { selector: "node", style: { "label": "data(label)", "background-color": "#0dcaf0", "font-size": "10px" } },
+          { selector: "edge", style: { "width": "mapData(count, 1, 100, 1, 8)", "line-color": "#999" } }
+        ]
+      });
+    } catch (err) {
+      console.error("Graph fetch failed:", err);
+    }
+  }
+
+  function graphFit() {
+    if (cy) cy.fit();
+  }
+
+  window.addEventListener('DOMContentLoaded', () => buildGraph());
+</script>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <div class="card-header d-flex align-items-center">
+    <h6 class="mb-0 me-auto">Alerts</h6>
+    <select id="alert-status-filter" class="form-select form-select-sm w-auto" onchange="loadAlerts()">
+      <option value="">All</option>
+      <option value="OPEN" selected>Open</option>
+      <option value="ACK">Acknowledged</option>
+      <option value="CLOSED">Closed</option>
+    </select>
+  </div>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-dark table-hover align-middle mb-0">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Time</th>
+          <th>Severity</th>
+          <th>Message</th>
+          <th>Status</th>
+          <th class="text-end">Actions</th>
+        </tr>
+        </thead>
+        <tbody id="alerts-body">
+          <tr><td colspan="6" class="text-center py-4 text-muted-2">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('DOMContentLoaded', () => loadAlerts());
+</script>
+{% endblock %}

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SIEM Firewall Dashboard</title>
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Cytoscape & Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.30.3/dist/cytoscape.min.js"></script>
+  <!-- Our styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="bg-app text-body">
+<nav class="navbar navbar-expand-lg navbar-dark bg-nav border-bottom border-cyan sticky-top">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold neon-cyan" href="/">🔒 SIEM-FW</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div id="navContent" class="collapse navbar-collapse">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link {% if request.path=='/' %}active{% endif %}" href="/">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link {% if request.path.startswith('/logs') %}active{% endif %}" href="/logs">Logs</a></li>
+        <li class="nav-item"><a class="nav-link {% if request.path.startswith('/alerts') %}active{% endif %}" href="/alerts">Alerts</a></li>
+        <li class="nav-item"><a class="nav-link {% if request.path.startswith('/graph') %}active{% endif %}" href="/graph">Graph</a></li>
+        <li class="nav-item"><a class="nav-link {% if request.path.startswith('/compliance') %}active{% endif %}" href="/compliance">Compliance</a></li>
+      </ul>
+
+      <div class="d-flex align-items-center gap-3">
+        <span class="badge bg-success-subtle text-success-emphasis" id="conn-indicator">
+          <i class="bi bi-circle-fill me-1"></i> Live
+        </span>
+        <button class="btn btn-sm btn-outline-cyan" id="themeToggle">
+          <i class="bi bi-moon-stars me-1"></i><span>Dark</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main class="container-fluid py-3">
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="container-fluid small py-3 text-muted-2">
+  <div class="d-flex justify-content-between">
+    <span>© {{ 2025 }} SIEM-FW • Dark UI</span>
+    <span id="last-refresh">Last refresh: —</span>
+  </div>
+</footer>
+
+<script>
+  // Theme toggle with localStorage
+  (function(){
+    const html = document.documentElement;
+    const btn = document.getElementById('themeToggle');
+    const saved = localStorage.getItem('theme') || 'dark';
+    html.setAttribute('data-theme', saved);
+    if (saved === 'light') btn.querySelector('span').textContent = 'Light';
+
+    btn?.addEventListener('click', () => {
+      const curr = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', curr);
+      localStorage.setItem('theme', curr);
+      btn.querySelector('span').textContent = curr === 'dark' ? 'Dark' : 'Light';
+    });
+  })();
+</script>
+
+<script src="{{ url_for('static', filename='charts.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <div class="card-header">
+    <div class="d-flex align-items-center gap-2 flex-wrap">
+      <h6 class="mb-0 me-auto">Logs</h6>
+      <input id="filter-q" class="form-control form-control-sm w-auto" placeholder="Search IP">
+      <select id="filter-action" class="form-select form-select-sm w-auto">
+        <option value="">Action</option>
+        <option value="ALLOW">ALLOW</option>
+        <option value="BLOCK">BLOCK</option>
+        <option value="DENY">DENY</option>
+      </select>
+      <select id="filter-proto" class="form-select form-select-sm w-auto">
+        <option value="">Proto</option>
+        <option>TCP</option><option>UDP</option><option>ICMP</option>
+      </select>
+      <input id="filter-port" class="form-control form-control-sm w-auto" placeholder="Port" type="number" min="0">
+      <button class="btn btn-sm btn-outline-cyan" onclick="reloadLogs()">Apply</button>
+      <button class="btn btn-sm btn-secondary" onclick="resetLogFilters()">Reset</button>
+    </div>
+  </div>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-dark table-hover align-middle mb-0">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Time</th>
+          <th>Src IP</th>
+          <th>Dst IP</th>
+          <th>Proto</th>
+          <th>Port</th>
+          <th>Action</th>
+        </tr>
+        </thead>
+        <tbody id="logs-body">
+        <tr><td colspan="7" class="text-center py-4 text-muted-2">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card-footer d-flex justify-content-between align-items-center">
+    <small id="logs-total">0 results</small>
+    <div class="btn-group">
+      <button class="btn btn-sm btn-outline-cyan" onclick="logsPrev()">Prev</button>
+      <button class="btn btn-sm btn-outline-cyan" onclick="logsNext()">Next</button>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('DOMContentLoaded', () => initLogs());
+</script>
+{% endblock %}
