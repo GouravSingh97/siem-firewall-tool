@@ -10,6 +10,6 @@ A lightweight SIEM tool built in Python and Flask that collects firewall logs, g
 
 ## Setup
 ```bash
-git clone https://github.com/YOUR_USERNAME/siem-firewall-tool.git
+git clone https://github.com/GouravSingh97/siem-firewall-tool.git
 cd siem-firewall-tool
 ./setup.sh
